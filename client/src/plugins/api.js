@@ -21,7 +21,7 @@ export default function ({ $axios, $localStorage, redirect }, inject) {
   }
 
   function errorHandler (err) {
-    if (err.response?.status === 401) {
+    if (err.response?.status === 401 || err.response?.status === 403) {
       $localStorage.remove('token')
       redirect('/')
     }
