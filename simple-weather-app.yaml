@@ -1,0 +1,14 @@
+version: '3'
+services:
+  postgres-swa:
+    image: postgres-swa
+    ports:
+      - 5433:5432
+  server-swa:
+    image: server-swa
+    ports:
+      - 5000:5000
+  client-swa:
+    image: client-swa
+    ports:
+      - 3000:3000
