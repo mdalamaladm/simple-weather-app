@@ -6,8 +6,10 @@ const jwtDecode = require('jwt-decode');
 const axios = require('axios');
 const app = express();
 const port = 5000;
+require('dotenv').config();
 
-const accessTokenSecret = 'aks83jali9kacjasd01lajs';
+const jwtSecret = process.env.JWT_SECRET;
+const openWeatherMapKey = process.env.OPEN_WEATHER_MAP_KEY;
 
 const pool = new pg.Pool({
   user: 'user',
@@ -23,8 +25,9 @@ const authenticateJWT = (req, res, next) => {
   if (authHeader) {
     const token = authHeader.split(' ')[1];
 
-    jwt.verify(token, accessTokenSecret, (err) => {
+    jwt.verify(token, jwtSecret, (err) => {
       if (err) {
+        console.error(err)
         return res.sendStatus(403);
       }
 
@@ -76,11 +79,12 @@ app.post('/login', (req, res) => {
     `SELECT * FROM user_data WHERE username='${username}' AND password='${password}'`,
     (err, rst) => {
       if (err) {
+        console.error(err)
         return res.sendStatus(400);
       }
 
       if (rst.rowCount === 1) {
-        const token = jwt.sign({ username }, accessTokenSecret);
+        const token = jwt.sign({ username }, jwtSecret);
 
         res.status(200).json(token);
       } else {
@@ -114,13 +118,38 @@ app.get('/profile', (req, res) => {
   )
 })
 
+app.put('/profile', (req, res) => {
+  const data = req.body;
+  const username = req.user.username;
+
+  let setQuery = [];
+
+  for (const name in data) {
+    if (data[name]) setQuery.push(`${name}='${data[name]}'`);
+  }
+
+  if (setQuery.length > 0) {
+    pool.query(
+      `UPDATE profile SET ${setQuery.join(',')} WHERE username='${username}'`,
+      (err) => {
+        if (err) {
+          console.error(err)
+          return res.sendStatus(400)
+        }
+
+        res.sendStatus(200)
+      }
+    )
+  } else {
+    res.status(400).json({ message: 'no data changed' })
+  }
+})
+
 app.get('/weather', async (req, res) => {
   const { lat, lon } = req.query;
 
-  const key = '6156d967f1482a072fbe4ff7c98b8ec1';
-
   axios
-    .get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${key}`)
+    .get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${openWeatherMapKey}`)
     .then((response) => {
       res.status(200).json(response.data);
     })
