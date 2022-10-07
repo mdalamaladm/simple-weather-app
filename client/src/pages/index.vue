@@ -34,9 +34,7 @@ export default {
 
       this.$localStorage.set('token', token)
 
-      setTimeout(() => {
-        this.$router.push('/home')
-      }, 2000)
+      this.$router.push('/home')
     }
   }
 }
