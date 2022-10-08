@@ -8,7 +8,18 @@ services:
     image: server-swa
     ports:
       - 5000:5000
+    environment:
+      - PORT=5000
+      - DB_USER=user
+      - DB_PASSWORD=password
+      - DB_HOST=postgres-swa
+      - DB_PORT=5432
+      - DB_DATABASE=simple_weather_app
+      - OPEN_WEATHER_MAP_KEY=yourkey
+      - JWT_SECRET=yourkey
   client-swa:
     image: client-swa
     ports:
       - 3000:3000
+    environment:
+      - BASE_URL=http://server-swa:5000
