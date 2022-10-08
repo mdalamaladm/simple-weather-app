@@ -5,18 +5,18 @@ const jwt = require('jsonwebtoken');
 const jwtDecode = require('jwt-decode');
 const axios = require('axios');
 const app = express();
-const port = 5000;
 require('dotenv').config();
 
+const port = process.env.PORT;
 const jwtSecret = process.env.JWT_SECRET;
 const openWeatherMapKey = process.env.OPEN_WEATHER_MAP_KEY;
 
 const pool = new pg.Pool({
-  user: 'user',
-  host: 'localhost',
-  database: 'simple_weather_app',
-  password: 'password',
-  port: 5433
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  database: process.env.DB_DATABASE,
 });
 
 const authenticateJWT = (req, res, next) => {
