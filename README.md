@@ -24,7 +24,7 @@ $ docker build -t postgres-swa ./db/
 $ docker build -t server-swa ./server/
 $ docker build -t client-swa ./client/
 ```
-4. Run docker-composer `simple-weather-app.yaml`
+4. Run docker-compose `simple-weather-app.yaml`
 ```
 $ docker-compose -f simple-weather-app.yaml up
 ```
