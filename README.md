@@ -25,7 +25,7 @@ $ docker build -t postgres-swa ./db/
 $ docker build -t server-swa ./server/
 $ docker build -t client-swa ./client/
 ```
-4. Set secret key for OpenWeatherMap API Key and JWT Secret KEY in `simple-weather-app.yaml` in server
+4. Set secret key for OpenWeatherMap API Key and JWT Secret Key in `simple-weather-app.yaml` in server
 ```
 - OPEN_WEATHER_MAP_KEY=yourkey
 - JWT_SECRET=yourkey
