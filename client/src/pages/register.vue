@@ -50,7 +50,7 @@ export default {
           this.$router.push('/')
         }, 2000)
       } catch {
-        this.$nuxt.$emit('message', 'Something\'s wrong, pleas try again')
+        this.$nuxt.$emit('message', 'Something\'s wrong, please try again')
       }
     }
   }
