@@ -1,10 +1,10 @@
-export default function ({ route, redirect, $localStorage, $snackbar }) {
+export default function ({ route, redirect, $cookiz }) {
   const excluded = [
     'index',
-    'registration'
+    'register'
   ]
 
-  const token = $localStorage.get('token')
+  const token = $cookiz.get('token')
 
   if (!excluded.includes(route.name)) {
     if (!token) {

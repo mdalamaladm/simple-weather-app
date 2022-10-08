@@ -1,4 +1,4 @@
-export default function ({ $axios, $localStorage, redirect }, inject) {
+export default function ({ $axios, $cookiz, redirect }, inject) {
   // Create a custom axios instance
 
   const api = $axios.create({
@@ -11,7 +11,7 @@ export default function ({ $axios, $localStorage, redirect }, inject) {
   })
 
   function requestHandler (config) {
-    const bearerToken = $localStorage.get('token')
+    const bearerToken = $cookiz.get('token')
 
     if (bearerToken) {
       config.headers.Authorization = `Bearer ${bearerToken}`
@@ -22,7 +22,7 @@ export default function ({ $axios, $localStorage, redirect }, inject) {
 
   function errorHandler (err) {
     if (err.response?.status === 401 || err.response?.status === 403) {
-      $localStorage.remove('token')
+      $cookiz.remove('token')
       redirect('/')
     }
   }
