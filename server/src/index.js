@@ -48,6 +48,8 @@ app.use(express.urlencoded({ extended: true }));
 
 app.post('/register', (req, res) => {
   const { name, username, password } = req.body;
+
+  if (!name || !username || !password) return res.sendStatus(400);
   
   pool.query(
     `INSERT INTO user_data VALUES ('${username}', '${password}')`,
@@ -74,6 +76,8 @@ app.post('/register', (req, res) => {
 
 app.post('/login', (req, res) => {
   const { username, password } = req.body;
+
+  if (!username || !password) return res.sendStatus(400);
 
   pool.query(
     `SELECT * FROM user_data WHERE username='${username}' AND password='${password}'`,
@@ -149,7 +153,7 @@ app.get('/weather', async (req, res) => {
   const { lat, lon } = req.query;
 
   axios
-    .get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${openWeatherMapKey}`)
+    .get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${openWeatherMapKey}`)
     .then((response) => {
       res.status(200).json(response.data);
     })
